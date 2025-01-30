@@ -1,0 +1,44 @@
+
+section {
+    display: flex;
+}
+.level{
+    flex-direction: column;
+}
+.levelLine{
+    flex-direction: row;
+}
+
+div {
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wall {
+    background-color: brown;
+}
+.path {
+    background-color: bisque;
+}
+.start {
+    background-color: blue;
+}
+.treasure {
+    background-color: gold;
+}
+.perso {
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    background-color: black;
+}
+main {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
