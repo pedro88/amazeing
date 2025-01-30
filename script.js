@@ -108,7 +108,7 @@ const expansion = async () => {
 const transition = async () => {
 
     await expansion()
-    await timeout(2000)
+    await timeout(20)
     actualLevel += 1
     levelBuilder()
     expansionBack()
@@ -259,21 +259,23 @@ document.addEventListener("keydown", function (event) {
 
 
 let newLevel = []
+let lineIndex
+let columnIndex
 
 const randomizer = (nbr) => {
-    return Math.round(Math.random()*nbr)
+    return Math.round(Math.random() * nbr)
 }
 
 const levelSizer = () => {
-    const nbrColumn = randomizer(20)+5
-    const nbrLine = randomizer(20)+5
-    for (let i = 0; i < nbrLine; i++){
+    const nbrColumn = randomizer(20) + 5
+    const nbrLine = randomizer(20) + 5
+    for (let i = 0; i < nbrLine; i++) {
         newLevel.push([])
         for (let j = 0; j < nbrColumn; j++) {
             newLevel[i].push("*")
         }
-    }    
-    return(newLevel)
+    }
+    return (newLevel)
 }
 
 const startRandomizer = () => {
@@ -282,24 +284,105 @@ const startRandomizer = () => {
     console.log(startColumn)
     newLevel[startLine].splice(startColumn, 1, "S")
     console.log(newLevel)
-    return(newLevel)
+    lineIndex = newLevel.findIndex((el) => el.find((ele) => ele === "S"))
+    columnIndex = newLevel[lineIndex].findIndex((el) => el === "S")
+    return (newLevel)
 }
+
 
 const pathGenerator = () => {
-// 1 = up
-// 2 = right
-// 3 = down
-// 4 = left
+    // 0 = up
+    // 1 = right
+    // 2 = down
+    // 3 = left
 
-const lineIndex = newLevel.findIndex((el) => el.find((ele) => ele === "S"))
-const columnIndex = newLevel[lineIndex].findIndex((el) => el === "S")
-// newLevel.find((el) => el === "S")
-console.log("line: ", lineIndex)
-console.log("colu: ", columnIndex)
+    console.log("line: ", lineIndex)
+    console.log("colu: ", columnIndex)
 
-const firstStep = {
-    
-}
+    const lengthPath = randomizer(40)
+    console.log(lengthPath)
+    for (let i = 0; i < lengthPath; i++) {
+        let direction = randomizer(4)
+        switch (direction) {
+            case (0):
+                if (lineIndex - 1 < 0 || newLevel[lineIndex - 1][columnIndex] === "." || newLevel[lineIndex - 1][columnIndex] === "S") {
+                    pathGenerator()
+                } else {
+                    lineIndex--
+                    newLevel[lineIndex].splice(columnIndex, 1, ".")
+                    break
+                }
+
+            case (1):
+                if (columnIndex + 1 > newLevel[0].length-1 || newLevel[lineIndex][columnIndex + 1] === "." || newLevel[lineIndex][columnIndex + 1] === "S") {
+                    pathGenerator()
+                } else {
+                    columnIndex++
+                    newLevel[lineIndex].splice(columnIndex, 1, ".")
+                    break
+                }
+
+            case (2):
+                if (lineIndex + 1 > newLevel.length-1 || newLevel[lineIndex + 1][columnIndex] === "." || newLevel[lineIndex + 1][columnIndex] === "S") {
+                    pathGenerator()
+                } else {
+                    lineIndex++
+                    newLevel[lineIndex].splice(columnIndex, 1, ".")
+                    break
+                }
+
+            case (3):
+                if (columnIndex - 1 < 0 || newLevel[lineIndex][columnIndex - 1] === "." || newLevel[lineIndex][columnIndex - 1] === "S") {
+                    pathGenerator()
+                } else {
+                    columnIndex--
+                    newLevel[lineIndex].splice(columnIndex, 1, ".")
+                    break
+                }
+
+        }
+        // direction = randomizer(4)
+        // switch (direction) {
+        //     case (0):
+        //         if (lineIndex - 1 < 0 || newLevel[lineIndex - 1][columnIndex] === "." || newLevel[lineIndex - 1][columnIndex] === "S") {
+        //             pathGenerator()
+        //         } else {
+        //             lineIndex--
+        //             newLevel[lineIndex].splice(columnIndex, 1, "T")
+        //             break
+        //         }
+
+        //     case (1):
+        //         if (columnIndex + 1 > newLevel[0].length-1 || newLevel[lineIndex][columnIndex + 1] === "." || newLevel[lineIndex][columnIndex + 1] === "S") {
+        //             pathGenerator()
+        //         } else {
+        //             columnIndex++
+        //             newLevel[lineIndex].splice(columnIndex, 1, "T")
+        //             break
+        //         }
+
+        //     case (2):
+        //         if (lineIndex + 1 > newLevel.length-1 || newLevel[lineIndex + 1][columnIndex] === "." || newLevel[lineIndex + 1][columnIndex] === "S") {
+        //             pathGenerator()
+        //         } else {
+        //             lineIndex++
+        //             newLevel[lineIndex].splice(columnIndex, 1, "T")
+        //             break
+        //         }
+
+        //     case (3):
+        //         if (columnIndex - 1 < 0 || newLevel[lineIndex][columnIndex - 1] === "." || newLevel[lineIndex][columnIndex - 1] === "S") {
+        //             pathGenerator()
+        //         } else {
+        //             columnIndex--
+        //             newLevel[lineIndex].splice(columnIndex, 1, "T")
+        //             break
+        //         }
+
+        // }
+
+    }
+    console.log(newLevel)
 }
 
 levelSizer()
